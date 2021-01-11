@@ -32,7 +32,6 @@ public class PlatformRepository {
                 "sort platform_family asc;" +
                 "limit 500;";
         HttpEntity<String> httpEntity = new HttpEntity<String>(body, igbdAccessToken.getHeaders());
-
         Platform[] platforms = restTemplate.postForObject(url + "/platforms",  httpEntity, Platform[].class);
         return Arrays.asList(platforms);
     }

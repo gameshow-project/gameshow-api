@@ -19,9 +19,7 @@ public class PlatformFamily {
 
     @Id
     private Long id;
-
     private String name;
-
     private String slug;
 
 }
