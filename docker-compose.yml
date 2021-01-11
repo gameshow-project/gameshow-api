@@ -1,0 +1,7 @@
+gameshow_db:
+  image: postgres:13-alpine
+  ports:
+    - 5432:5432
+  environment:
+    POSTGRES_PASSWORD: password_dev
+    POSTGRES_DB: gameshow_data_db

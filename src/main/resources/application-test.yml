@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/gameshow_data_db
+    username: postgres
+    password: password_dev
+
+app:
+  secret: secret
+  jwtExpirationMs: 86400000
+
+igdb:
+  url: https://api.igdb.com/v4
+  urlToken: https://id.twitch.tv/oauth2/token
+  client_id: ${CLIENT_ID}
+  client_secret: ${CLIENT_SECRET}
