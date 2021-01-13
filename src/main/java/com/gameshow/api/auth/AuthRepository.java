@@ -1,5 +1,6 @@
 package com.gameshow.api.auth;
 
+import com.gameshow.api.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

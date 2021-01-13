@@ -1,8 +1,10 @@
 package com.gameshow.api.config.security.jwt;
 
+import com.gameshow.api.auth.AuthService;
 import com.gameshow.api.config.AppConfig;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;

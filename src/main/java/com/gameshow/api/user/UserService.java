@@ -1,7 +1,13 @@
 package com.gameshow.api.user;
 
+import com.gameshow.api.auth.AuthService;
+import com.gameshow.api.platform.PlatformService;
+import com.gameshow.api.shared.Platform;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor

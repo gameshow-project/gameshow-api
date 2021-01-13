@@ -1,14 +1,16 @@
 package com.gameshow.api.shared;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gameshow.api.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -31,7 +33,8 @@ public class Platform {
 
     private String name;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "platform_family")
     private PlatformFamily platform_family;
 
     private String slug;

@@ -7,19 +7,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "platform_family")
-public class PlatformFamily {
+@Table(name = "game")
+public class Game {
 
     @Id
     private Long id;
+
+    @OneToOne
+    private Cover cover;
+
+    private Long created_at;
+
+    private Long category;
+
+    private Long collection;
+
+    private Long first_release_date;
+
     private String name;
-    private String slug;
+
 
 }
