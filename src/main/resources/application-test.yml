@@ -1,15 +1,30 @@
+server:
+  port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://localhost/gameshow_data_db
-    username: postgres
-    password: password_dev
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USRNAME}
+    password: ${DATASOURCE_PWD}
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
 
 app:
-  secret: secret
-  jwtExpirationMs: 86400000
+  secret: ${APP_SECRET}
+  tokenValidityInSeconds: 86400000
 
 igdb:
   url: https://api.igdb.com/v4
   urlToken: https://id.twitch.tv/oauth2/token
   client_id: ${CLIENT_ID}
   client_secret: ${CLIENT_SECRET}
+
+discord:
+  webhook_request: ${DISCORD_REQUEST}
+  webhook_ticket: ${DISCORD_TICKET}

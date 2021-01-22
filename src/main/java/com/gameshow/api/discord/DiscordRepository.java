@@ -2,6 +2,7 @@ package com.gameshow.api.discord;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.gameshow.api.shared.Game;
+import lombok.AllArgsConstructor;
 import netscape.javascript.JSObject;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class DiscordRepository {
 
     @Value("${discord.webhook_request}")
