@@ -1,6 +1,7 @@
 package com.gameshow.api.platform;
 
 import com.gameshow.api.platformFamily.PlatformFamilyService;
+import com.gameshow.api.platformLogo.PlatformLogoService;
 import com.gameshow.api.shared.Platform;
 import com.gameshow.api.user.User;
 import com.gameshow.api.user.UserNotFoundException;
@@ -19,8 +20,13 @@ public class PlatformService {
 
     private final PlatformFamilyService platformFamilyService;
 
+    private final PlatformLogoService platformLogoService;
+
     public Platform savePlatform(Platform platform) {
-        if (platform.getPlatform_family() != null && !platformFamilyService.existById(platform.getPlatform_family().getId())) {
+        if(platform.getPlatform_logo() != null) {
+            platformLogoService.savePlatformLogo(platform.getPlatform_logo());
+        }
+        if (platform.getPlatform_family() != null) {
             platformFamilyService.savePlatformFamily(platform.getPlatform_family());
         }
         return this.platformRepository.save(platform);

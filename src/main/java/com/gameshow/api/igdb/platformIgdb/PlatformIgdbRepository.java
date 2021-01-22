@@ -25,7 +25,7 @@ public class PlatformIgdbRepository {
     }
 
     public List<Platform> findPlatformByPlatformFamily(String platformFamily) {
-        String body = "fields *, platform_family.*;" +
+        String body = "fields *, platform_family.*, platform_logo.*;" +
                 "where platform_family = (" + platformFamily + ") & category = (1,5);" +
                 "sort platform_family asc;" +
                 "limit 500;";
@@ -35,7 +35,7 @@ public class PlatformIgdbRepository {
     }
 
     public List<Platform> researchPlatform(String research) {
-        String body = "fields *, platform_family.*;" +
+        String body = "fields *, platform_family.*, platform_logo.*;" +
                 "search \"" + research + "\";" +
                 "where category = (1,5);" +
                 "limit 500;";

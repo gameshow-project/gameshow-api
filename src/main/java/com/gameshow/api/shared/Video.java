@@ -1,6 +1,5 @@
 package com.gameshow.api.shared;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,14 +14,14 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "cover")
-public class Cover {
+@Table(name = "video")
+public class Video {
 
     @Id
     private Long id;
 
-    private String image_id;
+    private String name;
 
-    private String url;
+    private String video_id;
 
 }

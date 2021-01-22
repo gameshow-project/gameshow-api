@@ -24,3 +24,7 @@ igdb:
   urlToken: https://id.twitch.tv/oauth2/token
   client_id: ${CLIENT_ID}
   client_secret: ${CLIENT_SECRET}
+
+discord:
+  webhook_request: ${DISCORD_REQUEST}
+  webhook_ticket: ${DISCORD_TICKET}

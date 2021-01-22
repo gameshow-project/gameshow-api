@@ -22,6 +22,10 @@ public class GameIgdbService {
                 .build();
     }
 
+    public List<Game> researchGame(String query) {
+        return this.gameIgdbRepository.researchPlatform(query);
+    }
+
     public List<Game> lotRatingCount() {
         return this.gameIgdbRepository.gameWIthLotTotalRating();
     }

@@ -1,6 +1,5 @@
 package com.gameshow.api.shared;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,14 +14,14 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "cover")
-public class Cover {
+@Table(name = "platform_logo")
+public class PlatformLogo {
 
     @Id
     private Long id;
-
+    private boolean alpha_channel;
+    private boolean animated;
     private String image_id;
-
     private String url;
 
 }

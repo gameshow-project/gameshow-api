@@ -41,4 +41,8 @@ public class Platform {
 
     private Long updated_at;
 
+    @OneToOne
+    @JoinColumn(name = "platform_logo")
+    private PlatformLogo platform_logo;
+
 }

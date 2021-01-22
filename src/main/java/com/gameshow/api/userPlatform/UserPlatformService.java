@@ -1,5 +1,7 @@
 package com.gameshow.api.userPlatform;
 
+import com.gameshow.api.activity.ActivityService;
+import com.gameshow.api.activity.Category;
 import com.gameshow.api.platform.PlatformService;
 import com.gameshow.api.shared.Platform;
 import lombok.AllArgsConstructor;
@@ -14,13 +16,17 @@ public class UserPlatformService {
 
     private final UserPlatformRepository userPlatformRepository;
 
+    private final ActivityService activityService;
+
     private final PlatformService platformService;
 
     public UserPlatform addPlatformForUser(UserPlatform userPlatform) {
         if (!platformService.existById(userPlatform.getPlatform().getId())) {
             this.platformService.savePlatform(userPlatform.getPlatform());
         }
-        return this.userPlatformRepository.save(userPlatform);
+        UserPlatform userPlatformSave = this.userPlatformRepository.save(userPlatform);
+        activityService.createActivity(userPlatform.getUser(), null, userPlatform.getPlatform(), Category.ADD_PLATFORM);
+        return userPlatformSave;
     }
 
     public void deletePlatformForUser(Long platformId, Long userId) {
