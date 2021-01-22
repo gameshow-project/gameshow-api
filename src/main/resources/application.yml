@@ -17,7 +17,7 @@ spring:
 
 java:
   runtime:
-    version: 15
+    version: 11
 
 app:
   secret: ${APP_SECRET}
