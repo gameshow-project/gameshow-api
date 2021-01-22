@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@AllArgsConstructor
 public class DiscordRepository {
 
     @Value("${discord.webhook_request}")
