@@ -15,10 +15,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-java:
-  runtime:
-    version: 11
-
 app:
   secret: ${APP_SECRET}
   tokenValidityInSeconds: 86400000
