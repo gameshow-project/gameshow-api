@@ -1,0 +1,12 @@
+language: java
+jdk:
+- oraclejdk15
+script:
+- "./mvnw test"
+cache:
+ directories:
+    - '$HOME/.m2/repository'
+deploy:
+  provider: heroku
+  app: gameshow-api
+  api_key: $HEROKU_TOKEN
