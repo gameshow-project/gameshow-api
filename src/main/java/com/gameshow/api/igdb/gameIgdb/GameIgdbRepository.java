@@ -54,7 +54,7 @@ public class GameIgdbRepository {
     public List<Game> researchPlatform(String research) {
         String body = "fields *, cover.*, platforms.*, platforms.platform_family.*, platforms.platform_logo.*, similar_games.cover.*, similar_games.name, screenshots.*, videos.*;" +
                 "search \"" + research + "\";" +
-                "where category = 0 & version_parent = null;" +
+                "where category = (0,4) & version_parent = null;" +
                 "exclude collection.games.collection, collection.games.cover;" +
                 "limit 500;";
         HttpEntity<String> httpEntity = new HttpEntity<>(body, igbdAccessToken.getHeaders());
