@@ -60,4 +60,24 @@ public class UserGameController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/platinum/{gameId}")
+    public ResponseEntity<UserGame> setPlatinum(HttpServletRequest request, @PathVariable("gameId") Long gameId) throws AuthNotFoundException, UserGameNotFoundException {
+        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
+        User user = authService.getUserByEmail(requestEmail);
+        UserGameId userGameId = new UserGameId();
+        userGameId.setGame(gameId);
+        userGameId.setUser(user.getId());
+        return ResponseEntity.ok(userGameService.setPlatinum(userGameId));
+    }
+
+    @PostMapping("/finish/{gameId}")
+    public ResponseEntity<UserGame> setFinished(HttpServletRequest request, @PathVariable("gameId") Long gameId, @RequestBody int nbFinished) throws AuthNotFoundException, UserGameNotFoundException {
+        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
+        User user = authService.getUserByEmail(requestEmail);
+        UserGameId userGameId = new UserGameId();
+        userGameId.setGame(gameId);
+        userGameId.setUser(user.getId());
+        return ResponseEntity.ok(userGameService.setFinished(userGameId, nbFinished));
+    }
+
 }

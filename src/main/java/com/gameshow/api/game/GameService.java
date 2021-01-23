@@ -58,7 +58,7 @@ public class GameService {
     public GameDetails getGame(Long gameId, Long userId) throws GameNotFoundException {
         GameDetails gameDetails = new GameDetails();
         if (!gameRepository.existsById(gameId))  {
-            gameRepository.save(this.gameIgdbRepository.findById(gameId));
+            this.saveGame(this.gameIgdbRepository.findById(gameId));
         }
         gameDetails.setGame(this.findById(gameId));
         gameDetails.setNbFollowed(userGameRepository.countByGame_Id(gameId));

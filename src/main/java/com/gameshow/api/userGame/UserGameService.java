@@ -37,4 +37,16 @@ public class UserGameService {
         this.userGameRepository.deleteById(userGameId);
     }
 
+    public UserGame setPlatinum(UserGameId userGameId) throws UserGameNotFoundException {
+        UserGame userGame = userGameRepository.findById(userGameId).orElseThrow(() -> new UserGameNotFoundException(userGameId));
+        userGame.setPlatinum(!userGame.isPlatinum());
+        return userGameRepository.save(userGame);
+    }
+
+    public UserGame setFinished(UserGameId userGameId, int nbFinish) throws UserGameNotFoundException {
+        UserGame userGame = userGameRepository.findById(userGameId).orElseThrow(() -> new UserGameNotFoundException(userGameId));
+        userGame.setNbFinished(nbFinish);
+        return userGameRepository.save(userGame);
+    }
+
 }
