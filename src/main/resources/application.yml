@@ -19,6 +19,9 @@ app:
   secret: ${APP_SECRET}
   tokenValidityInSeconds: 86400000
 
+twitch:
+  url: https://api.twitch.tv/kraken
+
 igdb:
   url: https://api.igdb.com/v4
   urlToken: https://id.twitch.tv/oauth2/token

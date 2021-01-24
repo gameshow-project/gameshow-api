@@ -48,4 +48,11 @@ public class IgbdAccessToken {
         return requestHeaders;
     }
 
+    public HttpHeaders getHeadersTwitch() {
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.set("Client-ID", this.clientId);
+        requestHeaders.set("Accept", "application/vnd.twitchtv.v5+json");
+        return requestHeaders;
+    }
+
 }

@@ -15,6 +15,9 @@ spring:
     hibernate:
       ddl-auto: update
 
+twitch:
+  url: https://api.twitch.tv/kraken
+
 app:
   secret: ${APP_SECRET}
   tokenValidityInSeconds: 86400000
