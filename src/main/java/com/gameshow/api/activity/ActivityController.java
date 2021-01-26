@@ -15,7 +15,7 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Activity>> getActivitiesByUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity<List<Activity>> getActivitiesByUser(@PathVariable("userId") String userId) {
         return ResponseEntity.ok(activityService.getActivitiesByUser(userId));
     }
 
@@ -25,7 +25,7 @@ public class ActivityController {
     }
 
     @PostMapping("/dislike/{activityId}/{userId}")
-    public ResponseEntity<Activity> dislikeActivity(@PathVariable("activityId") Long activityId, @PathVariable("userId") Long userId) throws ActivityNotFoundException {
+    public ResponseEntity<Activity> dislikeActivity(@PathVariable("activityId") Long activityId, @PathVariable("userId") String userId) throws ActivityNotFoundException {
         return ResponseEntity.ok(activityService.dislikeActivity(activityId, userId));
     }
 

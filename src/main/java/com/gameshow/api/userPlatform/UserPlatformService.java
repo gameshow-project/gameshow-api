@@ -29,15 +29,18 @@ public class UserPlatformService {
         return userPlatformSave;
     }
 
-    public void deletePlatformForUser(Long platformId, Long userId) {
-        this.userPlatformRepository.deleteByPlatformIdAndUserId(platformId, userId);
+    public void deletePlatformForUser(Long platformId, String userId) {
+        UserPlatformId userPlatformId = new UserPlatformId();
+        userPlatformId.setPlatform(platformId);
+        userPlatformId.setUser(userId);
+        this.userPlatformRepository.deleteById(userPlatformId);
     }
 
-    public List<UserPlatform> getPlatformsUser(Long id) {
-        return userPlatformRepository.findAllByUserId(id);
+    public List<UserPlatform> getPlatformsUser(String id) {
+        return userPlatformRepository.findAllByUserUid(id);
     }
 
-    public UserPlatform changeQuantity(Long userId, Long platformId, int value) {
+    public UserPlatform changeQuantity(String userId, Long platformId, int value) {
         UserPlatformId userPlatformId = new UserPlatformId();
         userPlatformId.setPlatform(platformId);
         userPlatformId.setUser(userId);

@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Data
 public class UserPlatformId implements Serializable {
 
-    private Long user;
+    private String user;
     private Long platform;
 
 }

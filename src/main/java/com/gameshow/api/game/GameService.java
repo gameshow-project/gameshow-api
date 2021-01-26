@@ -55,7 +55,7 @@ public class GameService {
         return this.gameRepository.save(game);
     }
 
-    public GameDetails getGame(Long gameId, Long userId) throws GameNotFoundException {
+    public GameDetails getGame(Long gameId, String userId) throws GameNotFoundException {
         GameDetails gameDetails = new GameDetails();
         if (!gameRepository.existsById(gameId))  {
             this.saveGame(this.gameIgdbRepository.findById(gameId));

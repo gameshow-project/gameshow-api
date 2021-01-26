@@ -22,8 +22,17 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String uid;
+
+    private String name;
+
+    private String email;
+
+    private boolean isEmailVerified;
+
+    private String issuer;
+
+    private String picture;
 
     @NotNull
     @Size(min = 2, max = 50)

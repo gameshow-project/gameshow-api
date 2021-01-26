@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
-    List<Activity> findAllByUserIdOrderByDateDesc(Long userId);
+    List<Activity> findAllByUserUidOrderByDateDesc(String userId);
 
 }

@@ -23,8 +23,8 @@ public class ActivityService {
         return activityRepository.findById(activityId).orElseThrow(() -> new ActivityNotFoundException(activityId));
     }
 
-    public List<Activity> getActivitiesByUser(Long userId) {
-        return activityRepository.findAllByUserIdOrderByDateDesc(userId);
+    public List<Activity> getActivitiesByUser(String userId) {
+        return activityRepository.findAllByUserUidOrderByDateDesc(userId);
     }
 
     public Activity createActivity(User user, Game game, Platform platform, Category category) {
@@ -45,9 +45,9 @@ public class ActivityService {
         return activityRepository.save(activity);
     }
 
-    public Activity dislikeActivity(Long activityId, Long userId) throws ActivityNotFoundException {
+    public Activity dislikeActivity(Long activityId, String userId) throws ActivityNotFoundException {
         Activity activity = this.getById(activityId);
-        activity.getUsers().removeIf(user -> user.getId().equals(userId));
+        activity.getUsers().removeIf(user -> user.getUid().equals(userId));
         return activityRepository.save(activity);
     }
 }

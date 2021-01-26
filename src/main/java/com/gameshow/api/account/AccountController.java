@@ -15,7 +15,7 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Account> getAccountByUserId(@PathVariable("userId") Long userId) throws AccountNotFoundException {
+    public ResponseEntity<Account> getAccountByUserId(@PathVariable("userId") String userId) throws AccountNotFoundException {
         return ResponseEntity.ok(accountService.getAccountByUserId(userId));
     }
 

@@ -27,8 +27,8 @@ public class UserGameService {
         return userGameSave;
     }
 
-    public List<UserGame> getGamesUser(Long id) {
-        return this.userGameRepository.findAllByUserId(id);
+    public List<UserGame> getGamesUser(String id) {
+        return this.userGameRepository.findAllByUserUid(id);
     }
 
     public void removeGameForUser(UserGameId userGameId) {

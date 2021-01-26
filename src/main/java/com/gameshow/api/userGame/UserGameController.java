@@ -1,9 +1,6 @@
 package com.gameshow.api.userGame;
 
-import com.gameshow.api.auth.AuthNotFoundException;
-import com.gameshow.api.auth.AuthService;
-import com.gameshow.api.config.security.jwt.JWTFilter;
-import com.gameshow.api.config.security.jwt.TokenProvider;
+import com.gameshow.api.security.SecurityService;
 import com.gameshow.api.shared.Game;
 import com.gameshow.api.user.User;
 import com.gameshow.api.user.UserNotFoundException;
@@ -23,23 +20,19 @@ public class UserGameController {
 
     private final UserGameService userGameService;
 
-    private final TokenProvider tokenProvider;
-
-    private final AuthService authService;
+    private final SecurityService securityService;
 
     private final UserService userService;
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<UserGame>> getGamesUser(@PathVariable("id") Long id) throws UserNotFoundException {
+    public ResponseEntity<List<UserGame>> getGamesUser(@PathVariable("id") String id) throws UserNotFoundException {
         User user = userService.findById(id);
         return ResponseEntity.ok(userGameService.getGamesUser(id));
     }
 
     @PostMapping("/add_game")
-    public ResponseEntity<UserGame> addGameInUser(HttpServletRequest request,
-                                                  @RequestBody Game game) throws AuthNotFoundException {
-        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-        User user = authService.getUserByEmail(requestEmail);
+    public ResponseEntity<UserGame> addGameInUser(@RequestBody Game game) {
+        User user = securityService.getUser();
         UserGame userGame = UserGame.builder()
                 .game(game)
                 .user(user)
@@ -50,33 +43,30 @@ public class UserGameController {
 
     @Transactional
     @DeleteMapping("/remove_game/{gameId}")
-    public ResponseEntity<?> deletePlatformForUser(HttpServletRequest request, @PathVariable("gameId") Long gameId) throws AuthNotFoundException {
-        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-        User user = authService.getUserByEmail(requestEmail);
+    public ResponseEntity<?> deletePlatformForUser(HttpServletRequest request, @PathVariable("gameId") Long gameId) {
+        User user = securityService.getUser();
         UserGameId userGameId = new UserGameId();
         userGameId.setGame(gameId);
-        userGameId.setUser(user.getId());
+        userGameId.setUser(user.getUid());
         userGameService.removeGameForUser(userGameId);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/platinum/{gameId}")
-    public ResponseEntity<UserGame> setPlatinum(HttpServletRequest request, @PathVariable("gameId") Long gameId) throws AuthNotFoundException, UserGameNotFoundException {
-        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-        User user = authService.getUserByEmail(requestEmail);
+    public ResponseEntity<UserGame> setPlatinum(HttpServletRequest request, @PathVariable("gameId") Long gameId) throws UserGameNotFoundException {
+        User user = securityService.getUser();
         UserGameId userGameId = new UserGameId();
         userGameId.setGame(gameId);
-        userGameId.setUser(user.getId());
+        userGameId.setUser(user.getUid());
         return ResponseEntity.ok(userGameService.setPlatinum(userGameId));
     }
 
     @PostMapping("/finish/{gameId}")
-    public ResponseEntity<UserGame> setFinished(HttpServletRequest request, @PathVariable("gameId") Long gameId, @RequestBody int nbFinished) throws AuthNotFoundException, UserGameNotFoundException {
-        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-        User user = authService.getUserByEmail(requestEmail);
+    public ResponseEntity<UserGame> setFinished(@PathVariable("gameId") Long gameId, @RequestBody int nbFinished) throws UserGameNotFoundException {
+        User user = securityService.getUser();
         UserGameId userGameId = new UserGameId();
         userGameId.setGame(gameId);
-        userGameId.setUser(user.getId());
+        userGameId.setUser(user.getUid());
         return ResponseEntity.ok(userGameService.setFinished(userGameId, nbFinished));
     }
 

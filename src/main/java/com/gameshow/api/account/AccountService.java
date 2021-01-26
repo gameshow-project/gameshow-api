@@ -1,6 +1,5 @@
 package com.gameshow.api.account;
 
-import com.gameshow.api.auth.AuthNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +9,8 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
-    public Account getAccountByUserId(Long userId) throws AccountNotFoundException {
-        return accountRepository.findByUserId(userId).orElseThrow(() -> new AccountNotFoundException(userId));
+    public Account getAccountByUserId(String userId) throws AccountNotFoundException {
+        return accountRepository.findByUserUid(userId).orElseThrow(() -> new AccountNotFoundException(userId));
     }
 
     public Account saveAccount(Account account) {

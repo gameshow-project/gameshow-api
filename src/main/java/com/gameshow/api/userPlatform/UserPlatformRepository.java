@@ -7,9 +7,10 @@ import java.util.Optional;
 
 public interface UserPlatformRepository extends JpaRepository<UserPlatform, UserPlatformId> {
 
-    List<UserPlatform> findAllByUserId(Long id);
+    List<UserPlatform> findAllByUserUid(String id);
 
-    void deleteByPlatformIdAndUserId(Long platformId, Long userId);
+    @Override
+    void deleteById(UserPlatformId userPlatformId);
 
     @Override
     Optional<UserPlatform> findById(UserPlatformId userPlatformId);

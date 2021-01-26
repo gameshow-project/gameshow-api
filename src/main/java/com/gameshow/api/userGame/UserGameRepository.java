@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UserGameRepository extends JpaRepository<UserGame, UserGameId> {
 
-    List<UserGame> findAllByUserId(Long id);
+    List<UserGame> findAllByUserUid(String id);
 
     int countByGame_Id(Long gameId);
 

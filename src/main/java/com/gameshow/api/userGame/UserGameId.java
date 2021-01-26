@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Data
 public class UserGameId implements Serializable {
 
-    private Long user;
+    private String user;
     private Long game;
 
 }

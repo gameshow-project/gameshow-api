@@ -1,9 +1,6 @@
 package com.gameshow.api.userPlatform;
 
-import com.gameshow.api.auth.AuthNotFoundException;
-import com.gameshow.api.auth.AuthService;
-import com.gameshow.api.config.security.jwt.JWTFilter;
-import com.gameshow.api.config.security.jwt.TokenProvider;
+import com.gameshow.api.security.SecurityService;
 import com.gameshow.api.shared.Platform;
 import com.gameshow.api.user.User;
 import com.gameshow.api.user.UserNotFoundException;
@@ -25,14 +22,11 @@ public class UserPlatformController {
 
     private final UserService userService;
 
-    private final AuthService authService;
-
-    private final TokenProvider tokenProvider;
+    private final SecurityService securityService;
 
     @PostMapping("/add_platform")
-    public ResponseEntity<UserPlatform> saveUserPlaform(HttpServletRequest request, @RequestBody Platform platform) throws UserNotFoundException, AuthNotFoundException {
-        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-        User user = authService.getUserByEmail(requestEmail);
+    public ResponseEntity<UserPlatform> saveUserPlaform(@RequestBody Platform platform) {
+        User user = securityService.getUser();
         UserPlatform userPlatform = new UserPlatform();
         userPlatform.setPlatform(platform);
         userPlatform.setUser(user);
@@ -41,17 +35,15 @@ public class UserPlatformController {
     }
 
     @PostMapping("/add_quantity/platform/{platformId}")
-    public ResponseEntity<UserPlatform> incrementQuantity(HttpServletRequest request, @PathVariable("platformId") Long platformId) throws AuthNotFoundException {
-        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-        User user = authService.getUserByEmail(requestEmail);
-        return ResponseEntity.ok(userPlatformService.changeQuantity(user.getId(), platformId, 1));
+    public ResponseEntity<UserPlatform> incrementQuantity(@PathVariable("platformId") Long platformId) {
+        User user = securityService.getUser();
+        return ResponseEntity.ok(userPlatformService.changeQuantity(user.getUid(), platformId, 1));
     }
 
     @PostMapping("/remove_quantity/platform/{platformId}")
-    public ResponseEntity<UserPlatform> decreaseQuantity(HttpServletRequest request, @PathVariable("platformId") Long platformId) throws AuthNotFoundException {
-        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-        User user = authService.getUserByEmail(requestEmail);
-        UserPlatform userPlatform = userPlatformService.changeQuantity(user.getId(), platformId, -1);
+    public ResponseEntity<UserPlatform> decreaseQuantity(@PathVariable("platformId") Long platformId) {
+        User user = securityService.getUser();
+        UserPlatform userPlatform = userPlatformService.changeQuantity(user.getUid(), platformId, -1);
         if (userPlatform == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -59,17 +51,16 @@ public class UserPlatformController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<UserPlatform>> getPlatformsUser(@PathVariable("id") Long id) throws UserNotFoundException {
+    public ResponseEntity<List<UserPlatform>> getPlatformsUser(@PathVariable("id") String id) throws UserNotFoundException {
         User user = userService.findById(id);
         return ResponseEntity.ok(userPlatformService.getPlatformsUser(id));
     }
 
     @Transactional
     @DeleteMapping("/remove_platform/{platformId}")
-    public ResponseEntity<?> deletePlatformForUser(HttpServletRequest request, @PathVariable("platformId") Long platformId) throws AuthNotFoundException {
-        String requestEmail = tokenProvider.getUsername(JWTFilter.resolveToken(request));
-        User user = authService.getUserByEmail(requestEmail);
-        userPlatformService.deletePlatformForUser(platformId, user.getId());
+    public ResponseEntity<?> deletePlatformForUser(@PathVariable("platformId") Long platformId) {
+        User user = securityService.getUser();
+        userPlatformService.deletePlatformForUser(platformId, user.getUid());
         return ResponseEntity.ok().build();
     }
 
