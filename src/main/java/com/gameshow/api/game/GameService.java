@@ -1,5 +1,6 @@
 package com.gameshow.api.game;
 
+import com.gameshow.api.comment.CommentService;
 import com.gameshow.api.cover.CoverRepository;
 import com.gameshow.api.cover.CoverService;
 import com.gameshow.api.dto.GameDetails;
@@ -31,6 +32,8 @@ public class GameService {
     private final GameIgdbRepository gameIgdbRepository;
 
     private final UserGameRepository userGameRepository;
+
+    private final CommentService commentService;
 
     public Game findById(Long id) throws GameNotFoundException {
         return gameRepository.findById(id).orElseThrow(() -> new GameNotFoundException(id));
@@ -70,6 +73,7 @@ public class GameService {
             userGame.setGame(null);
             gameDetails.setUserGame(userGame);
         }
+        gameDetails.setComments(commentService.findAllByGame(gameId, 0, 5, "like"));
         return gameDetails;
     }
 
