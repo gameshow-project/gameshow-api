@@ -11,7 +11,7 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, L
 
     Page<Comment> findAllByGameIdAndParentNull(Long id, Pageable pageable);
 
-    Page<Comment> findAllByGameIdOrderByLike(Long id, Pageable pageable);
+    Page<Comment> findAllByGameIdAndParentNullOrderByNbLikeDesc(Long id, Pageable pageable);
 
     Page<Comment> findAllByParentId(Long parentId, Pageable pageable);
 

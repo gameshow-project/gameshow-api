@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -40,5 +41,8 @@ public class Comment {
     private User author;
 
     private Long date;
+
+    @Formula("(select count(*) from users where users.uid=id::varchar)")
+    private long nbLike;
 
 }

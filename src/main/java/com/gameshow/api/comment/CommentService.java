@@ -17,9 +17,11 @@ public class CommentService {
     private final CommentConverter commentConverter;
 
     public Page<CommentDto> findAllByGame(Long gameId, int offset, int limit, String order) {
-        Sort sort = order.equals("like") ? Sort.by(order).ascending() : Sort.by(order).descending();
-        Pageable pageable = PageRequest.of(offset, limit, sort);
-        return commentConverter.pageEntityToDto(commentRepository.findAllByGameIdAndParentNull(gameId, pageable));
+        if (order.equals("like")) {
+            return commentConverter.pageEntityToDto(commentRepository.findAllByGameIdAndParentNullOrderByNbLikeDesc(gameId, PageRequest.of(offset, limit)));
+        }else {
+            return commentConverter.pageEntityToDto(commentRepository.findAllByGameIdAndParentNull(gameId, PageRequest.of(offset, limit, Sort.by(order).descending())));
+        }
     }
 
     public void deleteComment(Long commentId) {
