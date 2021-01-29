@@ -56,4 +56,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<UserPlatform> userPlatforms;
+
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 }

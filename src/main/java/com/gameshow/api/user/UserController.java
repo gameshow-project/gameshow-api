@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @CrossOrigin
 @RestController
@@ -22,6 +25,21 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") String id) throws UserNotFoundException {
         User user = userService.findById(id);
+        User userSecurity = securityService.getUser();
+        if (user.getUid().equals(userSecurity.getUid())) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        if (user.getVisibility() == Visibility.PRIVATE) {
+            User userPrivate = User.builder()
+                    .userGames(new ArrayList<>())
+                    .userPlatforms(new ArrayList<>())
+                    .firstname(user.getFirstname())
+                    .lastname(user.getLastname())
+                    .visibility(user.getVisibility())
+                    .username(user.getUsername()).build();
+
+            return new ResponseEntity<>(userPrivate, HttpStatus.OK);
+        }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -30,6 +48,11 @@ public class UserController {
         User userSecurity = securityService.getUser();
         User user = userService.findById(userSecurity.getUid());
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUser(@RequestParam("query") String query) {
+        return ResponseEntity.ok(userService.searchUser(query));
     }
 
     @PostMapping("/set_banner/{imageId}")

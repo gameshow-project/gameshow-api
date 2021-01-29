@@ -3,7 +3,12 @@ package com.gameshow.api.user;
 import com.gameshow.api.account.Account;
 import com.gameshow.api.account.AccountService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -30,6 +35,18 @@ public class UserService {
         accountService.saveAccount(account);
         user.setAccount(account);
         return this.saveUser(user);
+    }
+
+    public List<User> searchUser(String query) {
+        UserSpecificationBuilder builder = new UserSpecificationBuilder();
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(query + ",");
+        while (matcher.find()) {
+            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+        }
+
+        Specification<User> spec = builder.build();
+        return userRepository.findAll(spec);
     }
 
 }
