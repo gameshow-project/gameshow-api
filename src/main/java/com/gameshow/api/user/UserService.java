@@ -2,6 +2,8 @@ package com.gameshow.api.user;
 
 import com.gameshow.api.account.Account;
 import com.gameshow.api.account.AccountService;
+import com.gameshow.api.user.converters.UserMinConverter;
+import com.gameshow.api.user.models.UserMinDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,8 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final AccountService accountService;
+    private final UserMinConverter userMinConverter;
 
     public User findById(String id) throws UserNotFoundException {
         return userRepository.findByUid(id).orElseThrow(() -> new UserNotFoundException(id));
@@ -37,7 +39,7 @@ public class UserService {
         return this.saveUser(user);
     }
 
-    public List<User> searchUser(String query) {
+    public List<UserMinDto> searchUser(String query) {
         UserSpecificationBuilder builder = new UserSpecificationBuilder();
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
         Matcher matcher = pattern.matcher(query + ",");
@@ -46,7 +48,7 @@ public class UserService {
         }
 
         Specification<User> spec = builder.build();
-        return userRepository.findAll(spec);
+        return userMinConverter.listEntityToDto(userRepository.findAll(spec));
     }
 
 }

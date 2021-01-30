@@ -2,6 +2,8 @@ package com.gameshow.api.user;
 
 import com.gameshow.api.account.Account;
 import com.gameshow.api.security.SecurityService;
+import com.gameshow.api.user.converters.UserMinConverter;
+import com.gameshow.api.user.models.UserMinDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
     private final SecurityService securityService;
 
     @GetMapping("/{id}")
@@ -36,7 +37,9 @@ public class UserController {
                     .firstname(user.getFirstname())
                     .lastname(user.getLastname())
                     .visibility(user.getVisibility())
-                    .username(user.getUsername()).build();
+                    .username(user.getUsername())
+                    .uid(user.getUid()).build()
+                    ;
 
             return new ResponseEntity<>(userPrivate, HttpStatus.OK);
         }
@@ -50,8 +53,17 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PostMapping("/visibility")
+    public ResponseEntity<User> changeVisibility(@RequestParam("value") String value) throws UserNotFoundException {
+        User userSecurity = securityService.getUser();
+        User user = userService.findById(userSecurity.getUid());
+        user.setVisibility(Visibility.valueOf(value));
+        return ResponseEntity.ok(userService.saveUser(user));
+
+    }
+
     @GetMapping("/search")
-    public ResponseEntity<List<User>> searchUser(@RequestParam("query") String query) {
+    public ResponseEntity<List<UserMinDto>> searchUser(@RequestParam("query") String query) {
         return ResponseEntity.ok(userService.searchUser(query));
     }
 
