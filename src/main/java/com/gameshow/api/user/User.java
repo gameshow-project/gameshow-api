@@ -48,7 +48,7 @@ public class User {
     @Size(min = 2, max = 50)
     private String username;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Account account;
 
     @OneToMany(mappedBy = "user")

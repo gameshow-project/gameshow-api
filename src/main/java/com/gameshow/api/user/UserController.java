@@ -89,6 +89,9 @@ public class UserController {
     ResponseEntity<User> setAccount(@RequestBody Account account) throws UserNotFoundException {
         User userSecurity = securityService.getUser();
         User user = userService.findById(userSecurity.getUid());
+        if (!account.getId().equals(user.getAccount().getId())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return ResponseEntity.ok(this.userService.saveAccount(account, user));
     }
 
