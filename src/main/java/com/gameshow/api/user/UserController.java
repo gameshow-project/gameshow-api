@@ -46,6 +46,14 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @PostMapping("/bio")
+    public ResponseEntity<User> setBio(@RequestBody String bio) throws UserNotFoundException {
+        User userSecurity = securityService.getUser();
+        User user = userService.findById(userSecurity.getUid());
+        user.setBio(bio);
+        return ResponseEntity.ok(userService.saveUser(user));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<User> me() throws UserNotFoundException {
         User userSecurity = securityService.getUser();
