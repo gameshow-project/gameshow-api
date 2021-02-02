@@ -49,7 +49,7 @@ public class User {
     @Size(min = 2, max = 50)
     private String username;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Account account;
 
     @Max(100)

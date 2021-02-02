@@ -3,6 +3,8 @@ package com.gameshow.api.Friend;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class FriendService {
@@ -21,6 +23,18 @@ public class FriendService {
         twoFriendId.setSender(idTwo);
         twoFriendId.setReceiver(idOne);
         return friendRepository.existsById(oneFriendId) || friendRepository.existsById(twoFriendId);
+    }
+
+    public FriendList getFriendList(String userId) {
+        List<Friend> senderAccept = friendRepository.findAllBySenderUidAndFriendStatus(userId, FriendStatus.ACCEPT);
+        List<Friend> receiverAccept = friendRepository.findAllByReceiverUidAndFriendStatus(userId, FriendStatus.ACCEPT);
+        senderAccept.addAll(receiverAccept);
+        List<Friend> pendingSender = friendRepository.findAllBySenderUidAndFriendStatus(userId, FriendStatus.PENDING);
+        List<Friend> pendingReceiver = friendRepository.findAllByReceiverUidAndFriendStatus(userId, FriendStatus.PENDING);
+        return FriendList.builder()
+                .myFriends(senderAccept)
+                .pendingReceiveRequest(pendingReceiver)
+                .pendingSendRequest(pendingSender).build();
     }
 
 }

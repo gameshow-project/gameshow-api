@@ -23,7 +23,7 @@ public class Account {
     private Long id;
 
     @JsonIgnore
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private User user;
 
     @NotNull
