@@ -2,7 +2,9 @@ package com.gameshow.api.user;
 
 import com.gameshow.api.account.Account;
 import com.gameshow.api.security.SecurityService;
+import com.gameshow.api.user.converters.UserDetailsConverter;
 import com.gameshow.api.user.converters.UserMinConverter;
+import com.gameshow.api.user.models.UserDetailsDto;
 import com.gameshow.api.user.models.UserMinDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,16 +24,17 @@ public class UserController {
 
     private final UserService userService;
     private final SecurityService securityService;
+    private final UserDetailsConverter userDetailsConverter;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") String id) throws UserNotFoundException {
+    public ResponseEntity<UserDetailsDto> getUserById(@PathVariable("id") String id) throws UserNotFoundException {
         User user = userService.findById(id);
         User userSecurity = securityService.getUser();
         if (user.getUid().equals(userSecurity.getUid())) {
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(userDetailsConverter.entityToDto(user), HttpStatus.OK);
         }
         if (user.getVisibility() == Visibility.PRIVATE) {
-            User userPrivate = User.builder()
+            UserDetailsDto userPrivate = UserDetailsDto.builder()
                     .userGames(new ArrayList<>())
                     .userPlatforms(new ArrayList<>())
                     .firstname(user.getFirstname())
@@ -43,7 +46,7 @@ public class UserController {
 
             return new ResponseEntity<>(userPrivate, HttpStatus.OK);
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userDetailsConverter.entityToDto(user), HttpStatus.OK);
     }
 
     @PostMapping("/bio")
@@ -55,10 +58,10 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<User> me() throws UserNotFoundException {
+    public ResponseEntity<UserDetailsDto> me() throws UserNotFoundException {
         User userSecurity = securityService.getUser();
         User user = userService.findById(userSecurity.getUid());
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userDetailsConverter.entityToDto(user));
     }
 
     @PostMapping("/visibility")
@@ -83,10 +86,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
+    public ResponseEntity<UserDetailsDto> saveUser(@RequestBody User user) {
         User userSecurity = securityService.getUser();
         if (user.getUid().equals(userSecurity.getUid())) {
-            return ResponseEntity.ok(userService.saveUser(user));
+            return ResponseEntity.ok(userDetailsConverter.entityToDto(userService.saveUser(user)));
         }else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

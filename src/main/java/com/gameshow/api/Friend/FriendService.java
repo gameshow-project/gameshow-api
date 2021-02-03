@@ -15,6 +15,10 @@ public class FriendService {
         return friendRepository.save(friend);
     }
 
+    public Friend getFriend(FriendId friendId) throws FriendRequestNotFound {
+        return friendRepository.findById(friendId).orElseThrow(() -> new FriendRequestNotFound(friendId));
+    }
+
     public boolean alreadyRequest(String idOne, String idTwo) {
         FriendId oneFriendId = new FriendId();
         oneFriendId.setSender(idOne);
@@ -23,6 +27,21 @@ public class FriendService {
         twoFriendId.setSender(idTwo);
         twoFriendId.setReceiver(idOne);
         return friendRepository.existsById(oneFriendId) || friendRepository.existsById(twoFriendId);
+    }
+
+    public Friend getRequestOrNull(String idOne, String idTwo) {
+        FriendId oneFriendId = new FriendId();
+        oneFriendId.setSender(idOne);
+        oneFriendId.setReceiver(idTwo);
+        if (friendRepository.existsById(oneFriendId)) {
+            return friendRepository.getOne(oneFriendId);
+        }
+        oneFriendId.setSender(idTwo);
+        oneFriendId.setReceiver(idOne);
+        if (friendRepository.existsById(oneFriendId)) {
+            return friendRepository.getOne(oneFriendId);
+        }
+        return null;
     }
 
     public FriendList getFriendList(String userId) {
@@ -35,6 +54,10 @@ public class FriendService {
                 .myFriends(senderAccept)
                 .pendingReceiveRequest(pendingReceiver)
                 .pendingSendRequest(pendingSender).build();
+    }
+
+    public void deleteFriend(Friend friend) {
+        this.friendRepository.delete(friend);
     }
 
 }
