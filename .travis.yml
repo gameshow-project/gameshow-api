@@ -10,3 +10,7 @@ deploy:
   provider: heroku
   app: gameshow-api
   api_key: $HEROKU_TOKEN
+
+branches:
+  only:
+    - master
